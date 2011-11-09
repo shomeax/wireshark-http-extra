@@ -5,7 +5,6 @@ do
 
         local stream_map = {}  -- a table per each stream : { req_cnt, resp_cnt, reqs }
         local resp_map = {}    -- a table mapping responses to requests
---        local req_map = {}
 
         -- added for responses
         http_wrapper_proto.fields.re_req_method = ProtoField.string("http_resp.request.method", "Request Method")
@@ -30,7 +29,6 @@ do
         function http_wrapper_proto.init()
             stream_map = {}
             resp_map = {}
---            req_map = {}
         end
 
         local function optional_port(tcp_port)
@@ -78,12 +76,7 @@ do
                         stream_map[stream_n][1] = request_n
 
                         stream_map[stream_n][3][ request_n ] = {f_req_meth().value, f_req_uri().value, f_req_ver().value, f_req_host().value}
-
---                        req_map[ pinfo.number ] = request_n
-                    else
---                        request_n = req_map[ pinfo.number ]
                     end
---                    treeitem:add(http_wrapper_proto.fields.re_req_method, stream_map[stream_n][3][request_n][1])
                 end
 
                 -- when we meet response, we lookup bump stream responses counter and map it to the corresponding request
@@ -134,5 +127,3 @@ do
 
         register_postdissector(http_wrapper_proto)
 end
-
-
